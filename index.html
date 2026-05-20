@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FrosCards – Premium Sports Trading Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4AF37;
+    --gold-light: #F0D060;
+    --dark: #0A0A0F;
+    --dark2: #111118;
+    --dark3: #1A1A24;
+    --surface: #1E1E2E;
+    --surface2: #252535;
+    --text: #E8E8F0;
+    --muted: #888899;
+    --accent-blue: #4A9EFF;
+    --accent-red: #FF4A4A;
+    --accent-green: #4AFF88;
+    --border: rgba(212,175,55,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(212,175,55,0.4);
+  }
+
+  .logo span { color: var(--text); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  nav ul a {
+    text-decoration: none;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--dark) !important;
+    padding: 0.4rem 1.2rem;
+    font-weight: 700 !important;
+    transition: background 0.2s, transform 0.1s !important;
+  }
+
+  .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 4rem 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 80% 50%, rgba(212,175,55,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(74,158,255,0.06) 0%, transparent 70%),
+      linear-gradient(180deg, var(--dark) 0%, var(--dark2) 100%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(212,175,55,0.03) 0px, transparent 1px, transparent 80px, rgba(212,175,55,0.03) 81px),
+      repeating-linear-gradient(0deg, rgba(212,175,55,0.03) 0px, transparent 1px, transparent 80px, rgba(212,175,55,0.03) 81px);
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 700px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(212,175,55,0.12);
+    border: 1px solid var(--border);
+    padding: 0.35rem 1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 .line2 { color: var(--gold); display: block; }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    padding: 0.85rem 2.2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+  }
+
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 2.2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--gold); background: rgba(212,175,55,0.06); }
+
+  /* SPORT TABS + FILTER */
+  .shop-section {
+    padding: 5rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+
+  .section-title span { color: var(--gold); }
+
+  .sport-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 0.5rem 1.4rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab:hover, .tab.active {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .filter-bar select, .filter-bar input {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    padding: 0.55rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 160px;
+  }
+
+  .filter-bar select:hover, .filter-bar input:focus {
+    border-color: var(--gold);
+  }
+
+  .filter-bar input { min-width: 220px; }
+  .filter-bar input::placeholder { color: var(--muted); }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212,175,55,0.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(212,175,55,0.1);
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 2.5/3.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  }
+
+  .card-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .card:hover .card-shine { transform: translateX(100%); }
+
+  .sport-bball { background: linear-gradient(145deg, #1a1005, #2d1a05, #1a1005); }
+  .sport-baseball { background: linear-gradient(145deg, #051a0a, #0a2d12, #051a0a); }
+  .sport-football { background: linear-gradient(145deg, #05101a, #0a1e2d, #05101a); }
+
+  .graded-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    padding: 0.2rem 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .lot-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--accent-blue);
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    padding: 0.2rem 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .card-body {
+    padding: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .card-sport-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    margin-bottom: 0.2rem;
+  }
+
+  .card-detail {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .grade-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--gold);
+    background: rgba(212,175,55,0.12);
+    padding: 0.15rem 0.5rem;
+    border: 1px solid rgba(212,175,55,0.3);
+  }
+
+  .add-cart {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    padding: 0.35rem 0.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .add-cart:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+
+  /* LOTS SECTION */
+  .lots-section {
+    background: var(--dark2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+
+  .lots-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .lots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .lot-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lot-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s;
+  }
+
+  .lot-card:hover { border-color: rgba(212,175,55,0.3); transform: translateY(-3px); }
+  .lot-card:hover::before { transform: scaleY(1); }
+
+  .lot-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark3);
+    flex-shrink: 0;
+  }
+
+  .lot-info h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .lot-info p {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .lot-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .lot-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+  }
+
+  .lot-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* WHY US */
+  .why-section {
+    padding: 5rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .why-card {
+    padding: 2rem 1.5rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .why-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .why-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .why-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* NEWSLETTER */
+  .newsletter {
+    background: linear-gradient(135deg, var(--dark2) 0%, var(--dark3) 100%);
+    border-top: 1px solid var(--border);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .newsletter h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter h2 span { color: var(--gold); }
+  .newsletter p { color: var(--muted); margin-bottom: 2rem; }
+
+  .nl-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .nl-form input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-right: none;
+    color: var(--text);
+    padding: 0.8rem 1.2rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+  }
+
+  .nl-form input:focus { border-color: var(--gold); }
+
+  .nl-form button {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .nl-form button:hover { background: var(--gold-light); }
+
+  /* FOOTER */
+  footer {
+    background: #07070C;
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem 1.5rem;
+  }
+
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand .logo { font-size: 1.6rem; display: block; margin-bottom: 0.75rem; }
+  .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; max-width: 260px; }
+
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.5rem; }
+  .footer-col ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--text); }
+
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* CART ICON */
+  .cart-icon {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -8px; right: -8px;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  /* HERO FLOATING CARDS */
+  .hero-cards-float {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(-50%) translateY(0); }
+    50% { transform: translateY(-50%) translateY(-12px); }
+  }
+
+  .float-card {
+    width: 130px;
+    height: 182px;
+    background: var(--surface);
+    border: 1px solid rgba(212,175,55,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .float-card:nth-child(1) { transform: rotate(-8deg) translateY(10px); z-index: 1; }
+  .float-card:nth-child(2) { transform: rotate(3deg); z-index: 3; box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(212,175,55,0.1); border-color: rgba(212,175,55,0.4); }
+  .float-card:nth-child(3) { transform: rotate(10deg) translateY(10px); z-index: 2; }
+
+  .float-card .fc-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .float-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 960px) {
+    .hero-cards-float { display: none; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">FROS<span>CARDS</span></div>
+  <ul>
+    <li><a href="#">Singles</a></li>
+    <li><a href="#">Lots</a></li>
+    <li><a href="#">Graded</a></li>
+    <li><a href="#">Baseball</a></li>
+    <li><a href="#">Basketball</a></li>
+    <li><a href="#">Football</a></li>
+    <li><a href="#" class="nav-cta">Shop Now</a></li>
+  </ul>
+  <div class="cart-icon">🛒<span class="cart-count" id="cartCount">0</span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⭐ Singles · Lots · Graded Cards</div>
+    <h1>YOUR NEXT<span class="line2">GREAT CARD</span>STARTS HERE</h1>
+    <p>Basketball, baseball, and football cards — from raw singles to PSA-graded gems. Shop by player, team, or grab a lot and build your collection fast.</p>
+    <div class="hero-btns">
+      <a href="#shop" class="btn-primary">Browse Cards</a>
+      <a href="#lots" class="btn-outline">View Lots</a>
+    </div>
+  </div>
+  <div class="hero-cards-float">
+    <div class="float-card sport-bball">🏀<span class="fc-label">Basketball</span></div>
+    <div class="float-card sport-baseball">⚾<span class="fc-label">Baseball</span></div>
+    <div class="float-card sport-football">🏈<span class="fc-label">Football</span></div>
+  </div>
+</section>
+
+<!-- SINGLES SHOP -->
+<section class="shop-section" id="shop">
+  <div class="section-header">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">— Single Cards</div>
+      <div class="section-title">SHOP <span>SINGLES</span></div>
+    </div>
+  </div>
+
+  <div class="sport-tabs">
+    <button class="tab active" onclick="filterSport('all',this)">All Sports</button>
+    <button class="tab" onclick="filterSport('basketball',this)">🏀 Basketball</button>
+    <button class="tab" onclick="filterSport('baseball',this)">⚾ Baseball</button>
+    <button class="tab" onclick="filterSport('football',this)">🏈 Football</button>
+    <button class="tab" onclick="filterSport('graded',this)">🏅 Graded Only</button>
+  </div>
+
+  <div class="filter-bar">
+    <select id="teamFilter" onchange="applyFilters()">
+      <option value="">All Teams</option>
+      <option>Lakers</option>
+      <option>Bulls</option>
+      <option>Warriors</option>
+      <option>Celtics</option>
+      <option>Yankees</option>
+      <option>Dodgers</option>
+      <option>Red Sox</option>
+      <option>Cubs</option>
+      <option>Chiefs</option>
+      <option>Cowboys</option>
+      <option>49ers</option>
+      <option>Patriots</option>
+    </select>
+    <select id="priceFilter" onchange="applyFilters()">
+      <option value="">All Prices</option>
+      <option value="0-25">Under $25</option>
+      <option value="25-100">$25 – $100</option>
+      <option value="100-500">$100 – $500</option>
+      <option value="500+">$500+</option>
+    </select>
+    <input type="text" id="searchFilter" placeholder="🔍  Search player or team..." oninput="applyFilters()">
+  </div>
+
+  <div class="cards-grid" id="cardsGrid"></div>
+</section>
+
+<!-- LOTS SECTION -->
+<section class="lots-section" id="lots">
+  <div class="lots-inner">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">— Bulk Buying</div>
+    <div class="section-title">SHOP <span>LOTS</span></div>
+    <div class="lots-grid" id="lotsGrid"></div>
+  </div>
+</section>
+
+<!-- WHY FROSCARDS -->
+<section class="why-section">
+  <div style="text-align:center;margin-bottom:1rem;">
+    <div class="section-title">WHY <span>FROSCARDS</span></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <span class="why-icon">🏅</span>
+      <h3>Graded Cards</h3>
+      <p>PSA and BGS graded singles available. Certified condition, transparent grades shown on every listing.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">📦</span>
+      <h3>Bulk Lots</h3>
+      <p>Team lots, player lots, and mixed sport lots — great for collectors, traders, and breaks.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🚚</span>
+      <h3>Fast Shipping</h3>
+      <p>Cards shipped in toploaders and team bags with tracking on every order. Graded cards bubble-wrapped.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🏀⚾🏈</span>
+      <h3>All 3 Sports</h3>
+      <p>Basketball, baseball, and football cards all in one place. New inventory added regularly.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">💬</span>
+      <h3>Collector Community</h3>
+      <p>Have questions about a card? Reach out anytime. We're collectors too — we know what matters.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <h2>NEW INVENTORY <span>ALERTS</span></h2>
+  <p>Be the first to know when new cards and lots drop. No spam — just cards.</p>
+  <div class="nl-form">
+    <input type="email" placeholder="your@email.com">
+    <button>Subscribe</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo">FROS<span>CARDS</span></span>
+      <p>Your trusted source for basketball, baseball, and football trading cards — singles and lots, graded and raw.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">Basketball Cards</a></li>
+        <li><a href="#">Baseball Cards</a></li>
+        <li><a href="#">Football Cards</a></li>
+        <li><a href="#">Graded Cards</a></li>
+        <li><a href="#">Card Lots</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Policies</h4>
+      <ul>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Grading Guide</a></li>
+        <li><a href="#">Card Condition</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">eBay Store</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">About FrosCards</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 FrosCards. All rights reserved.</span>
+    <span>Built for collectors, by collectors. 🃏</span>
+  </div>
+</footer>
+
+<script>
+const singleCards = [
+  { id:1, sport:'basketball', name:'LeBron James', team:'Lakers', year:'2020-21', price:89, graded:true, grade:'PSA 9', emoji:'🏀', color:'sport-bball' },
+  { id:2, sport:'basketball', name:'Stephen Curry', team:'Warriors', year:'2021-22', price:65, graded:false, grade:null, emoji:'🏀', color:'sport-bball' },
+  { id:3, sport:'baseball', name:'Mike Trout', team:'Angels', year:'2019', price:145, graded:true, grade:'PSA 10', emoji:'⚾', color:'sport-baseball' },
+  { id:4, sport:'football', name:'Patrick Mahomes', team:'Chiefs', year:'2017 RC', price:320, graded:true, grade:'BGS 9.5', emoji:'🏈', color:'sport-football' },
+  { id:5, sport:'basketball', name:'Michael Jordan', team:'Bulls', year:'1996-97', price:499, graded:true, grade:'PSA 8', emoji:'🏀', color:'sport-bball' },
+  { id:6, sport:'baseball', name:'Shohei Ohtani', team:'Dodgers', year:'2023', price:55, graded:false, grade:null, emoji:'⚾', color:'sport-baseball' },
+  { id:7, sport:'football', name:'Travis Kelce', team:'Chiefs', year:'2013 RC', price:185, graded:true, grade:'PSA 9', emoji:'🏈', color:'sport-football' },
+  { id:8, sport:'basketball', name:'Jayson Tatum', team:'Celtics', year:'2017 RC', price:42, graded:false, grade:null, emoji:'🏀', color:'sport-bball' },
+  { id:9, sport:'baseball', name:'Derek Jeter', team:'Yankees', year:'2000', price:78, graded:false, grade:null, emoji:'⚾', color:'sport-baseball' },
+  { id:10, sport:'football', name:'Dak Prescott', team:'Cowboys', year:'2016 RC', price:38, graded:false, grade:null, emoji:'🏈', color:'sport-football' },
+  { id:11, sport:'basketball', name:'Giannis A.', team:'Bucks', year:'2013 RC', price:210, graded:true, grade:'PSA 10', emoji:'🏀', color:'sport-bball' },
+  { id:12, sport:'baseball', name:'Pete Alonso', team:'Mets', year:'2019 RC', price:22, graded:false, grade:null, emoji:'⚾', color:'sport-baseball' },
+];
+
+const lots = [
+  { sport:'basketball', icon:'🏀', name:'Lakers Team Lot', desc:'50 assorted Lakers cards — multiple eras, players, and sets. Great for any LA collector.', price:28, count:'50 Cards' },
+  { sport:'basketball', icon:'🏀', name:'Michael Jordan Lot', desc:'20-card Jordan lot featuring cards from his Bulls championship years.', price:75, count:'20 Cards' },
+  { sport:'baseball', icon:'⚾', name:'Yankees Team Lot', desc:'40+ Yankees cards spanning multiple decades. Mix of stars and role players.', price:22, count:'40+ Cards' },
+  { sport:'baseball', icon:'⚾', name:'1990s Baseball Lot', desc:'100 cards from the golden junk-wax era. Great for breaks or nostalgia collecting.', price:18, count:'100 Cards' },
+  { sport:'football', icon:'🏈', name:'Chiefs Team Lot', desc:'30 Chiefs cards including Mahomes, Kelce, and more from their dynasty years.', price:35, count:'30 Cards' },
+  { sport:'football', icon:'🏈', name:'Mixed Sports Starter Lot', desc:'Perfect intro lot — 60 cards spanning all three sports. Ideal for new collectors.', price:24, count:'60 Cards' },
+];
+
+let currentSport = 'all';
+let cartCount = 0;
+
+function renderCards(filtered) {
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = filtered.map((c, i) => `
+    <div class="card" style="animation-delay:${i*0.05}s" data-sport="${c.sport}" data-graded="${c.graded}" data-team="${c.team}" data-name="${c.name.toLowerCase()}">
+      <div class="card-img ${c.color}">
+        ${c.graded ? '<span class="graded-badge">Graded</span>' : ''}
+        <span style="font-size:3.5rem">${c.emoji}</span>
+        <div class="card-shine"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-sport-tag">${c.sport} · ${c.year}</div>
+        <div class="card-name">${c.name}</div>
+        <div class="card-detail">${c.team}</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-price">$${c.price}</div>
+            ${c.graded ? `<div class="grade-score">${c.grade}</div>` : '<div style="font-size:0.72rem;color:var(--muted);margin-top:2px;">Raw / Ungraded</div>'}
+          </div>
+          <button class="add-cart" onclick="addToCart(event)">+ Cart</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLots() {
+  document.getElementById('lotsGrid').innerHTML = lots.map(l => `
+    <div class="lot-card">
+      <div class="lot-icon">${l.icon}</div>
+      <div class="lot-info">
+        <h3>${l.name}</h3>
+        <p>${l.desc}</p>
+        <div class="lot-meta">
+          <div class="lot-price">$${l.price}</div>
+          <div class="lot-count">${l.count}</div>
+          <button class="add-cart" onclick="addToCart(event)">+ Cart</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterSport(sport, btn) {
+  currentSport = sport;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const team = document.getElementById('teamFilter').value.toLowerCase();
+  const price = document.getElementById('priceFilter').value;
+  const search = document.getElementById('searchFilter').value.toLowerCase();
+
+  let filtered = singleCards.filter(c => {
+    if (currentSport === 'graded' && !c.graded) return false;
+    if (currentSport !== 'all' && currentSport !== 'graded' && c.sport !== currentSport) return false;
+    if (team && c.team.toLowerCase() !== team) return false;
+    if (search && !c.name.toLowerCase().includes(search) && !c.team.toLowerCase().includes(search)) return false;
+    if (price) {
+      if (price === '0-25' && c.price >= 25) return false;
+      if (price === '25-100' && (c.price < 25 || c.price >= 100)) return false;
+      if (price === '100-500' && (c.price < 100 || c.price >= 500)) return false;
+      if (price === '500+' && c.price < 500) return false;
+    }
+    return true;
+  });
+
+  renderCards(filtered);
+}
+
+function addToCart(e) {
+  e.stopPropagation();
+  cartCount++;
+  document.getElementById('cartCount').textContent = cartCount;
+  const btn = e.target;
+  btn.textContent = '✓ Added';
+  btn.style.background = 'var(--accent-green)';
+  btn.style.color = 'var(--dark)';
+  setTimeout(() => {
+    btn.textContent = '+ Cart';
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 1500);
+}
+
+renderCards(singleCards);
+renderLots();
+</script>
+</body>
+</html>
